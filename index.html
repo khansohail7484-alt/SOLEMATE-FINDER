@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soulmate — Discover Your Match</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+  color:#fff;background:#07030f;overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-3;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(153,65,255,.25),transparent 28%),
+    radial-gradient(circle at 80% 20%,rgba(255,58,155,.18),transparent 30%),
+    radial-gradient(circle at 50% 90%,rgba(90,40,220,.20),transparent 32%),
+    linear-gradient(135deg,#05020a,#0d0619 50%,#05020b);
+}
+.stars,.stars:before,.stars:after{content:"";position:fixed;inset:0;z-index:-2;background-image:
+ radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1.5px);
+ background-size:120px 120px;opacity:.35;animation:drift 18s linear infinite}
+.stars:before{background-size:180px 180px;opacity:.22;animation-duration:30s}
+.stars:after{background-size:75px 75px;opacity:.12;animation-duration:12s}
+@keyframes drift{to{transform:translate3d(50px,80px,0)}}
+
+header{display:flex;justify-content:space-between;align-items:center;padding:22px 7%;position:relative}
+.logo{font-weight:900;letter-spacing:.12em;font-size:17px}
+.logo span{color:#ff65c3}
+.badge{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);padding:8px 13px;border-radius:99px;font-size:11px;color:#d9cdea}
+
+main{width:min(1080px,92%);margin:auto}
+.hero{text-align:center;padding:54px 0 28px}
+.kicker{color:#ff79ca;font-size:12px;letter-spacing:.28em;text-transform:uppercase;font-weight:800}
+h1{font-size:clamp(44px,9vw,92px);line-height:.94;margin:18px auto;max-width:900px;letter-spacing:-.055em}
+h1 .grad{background:linear-gradient(90deg,#fff,#ff9ad8,#c29bff,#fff);-webkit-background-clip:text;color:transparent;background-size:220%;animation:shine 5s ease-in-out infinite}
+@keyframes shine{50%{background-position:100% 50%}}
+.hero p{max-width:620px;margin:0 auto;color:#c7bbd5;line-height:1.7;font-size:15px}
+
+.card{
+  width:min(620px,100%);margin:34px auto;padding:28px;
+  background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.14);border-radius:28px;
+  box-shadow:0 30px 100px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.08);
+  backdrop-filter:blur(20px);
+}
+.card h2{text-align:center;font-size:24px;margin-bottom:7px}
+.sub{text-align:center;color:#a99bb7;font-size:13px;margin-bottom:24px}
+.form{display:grid;gap:15px}
+label{font-size:12px;color:#cfc4d8;font-weight:700;margin-bottom:-7px}
+input,select{
+  width:100%;padding:15px 16px;border-radius:15px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(4,1,10,.55);color:white;outline:none;font-size:14px;
+}
+input:focus,select:focus{border-color:#ff63bf;box-shadow:0 0 0 3px rgba(255,99,191,.1)}
+select option{background:#12091d}
+.btn{
+  border:0;cursor:pointer;color:#fff;font-size:15px;font-weight:900;
+  padding:17px;border-radius:16px;margin-top:5px;
+  background:linear-gradient(100deg,#ff3da8,#9a58ff);
+  box-shadow:0 12px 35px rgba(202,55,182,.28);
+  transition:.2s transform,.2s filter;
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.note{text-align:center;color:#81758d;font-size:10px;margin-top:13px;line-height:1.5}
+
+#loading,#result{display:none}
+.loading{text-align:center;padding:50px 20px}
+.orbit{width:110px;height:110px;margin:0 auto 28px;border:1px solid rgba(255,105,200,.35);border-radius:50%;position:relative;animation:spin 3s linear infinite}
+.orbit:before{content:"♥";position:absolute;inset:0;display:grid;place-items:center;font-size:38px;color:#ff6fc7;text-shadow:0 0 30px #ff3da8}
+.orbit:after{content:"";position:absolute;width:11px;height:11px;border-radius:50%;background:#fff;top:-5px;left:50%;box-shadow:0 0 18px #ff8dd5}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading h2{font-size:25px}.loading p{color:#a99db3;margin-top:10px;font-size:13px}
+.dots:after{content:"";animation:dots 1.3s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+
+.result-top{text-align:center}
+.result-top .small{color:#ff83ce;letter-spacing:.2em;font-size:11px;font-weight:800}
+.result-top h2{font-size:42px;margin:8px 0}
+.portrait{
+  width:min(310px,75vw);aspect-ratio:1/1.15;margin:20px auto;
+  border-radius:26px;position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#ede2d7,#9c877f 48%,#403a43);
+  box-shadow:0 25px 60px rgba(0,0,0,.45),0 0 45px rgba(255,91,190,.16);
+}
+.portrait img{
+  width:100%;height:100%;display:block;object-fit:cover;
+}
+.portrait:after{
+  content:"AI FICTIONAL PORTRAIT";position:absolute;bottom:12px;left:0;right:0;
+  text-align:center;font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.8);
+  text-shadow:0 1px 5px rgba(0,0,0,.8);
+}
+.details{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+.detail{padding:15px 12px;border-radius:17px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);text-align:left}
+.detail b{display:block;font-size:10px;color:#95889e;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+.detail span{font-weight:800;font-size:14px}
+.match{margin:20px 0;padding:20px;border-radius:20px;background:linear-gradient(100deg,rgba(255,67,170,.10),rgba(146,82,255,.12));border:1px solid rgba(255,255,255,.1)}
+.match strong{font-size:34px;background:linear-gradient(90deg,#ff75c6,#bb9aff);-webkit-background-clip:text;color:transparent}
+.match p{color:#b9aebe;font-size:12px;margin-top:4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.secondary{background:rgba(255,255,255,.07);box-shadow:none}
+.disclaimer{font-size:10px;color:#766a80;text-align:center;line-height:1.5;margin-top:16px}
+
+@media(max-width:520px){
+ header{padding:18px 5%}.hero{padding-top:35px}
+ .card{padding:21px;border-radius:23px}
+ .details{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<header>
+  <div class="logo">SOUL<span>MATE</span></div>
+  <div class="badge">✨ Just for fun</div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="kicker">A little cosmic experiment</div>
+  <h1>Who is <span class="grad">waiting for you?</span></h1>
+  <p>Enter a few details and discover a fictional soulmate profile — complete with a name, sketch, personality, location and a playful future prediction.</p>
+</section>
+
+<section class="card" id="formCard">
+  <h2>Tell us about yourself</h2>
+  <div class="sub">Your journey starts with four little details.</div>
+  <div class="form">
+    <label>Your name</label>
+    <input id="name" placeholder="Enter your name" maxlength="40">
+
+    <label>Your gender</label>
+    <select id="gender">
+      <option value="">Select your gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <label>Your age</label>
+    <input id="age" type="number" min="13" max="100" placeholder="Enter your age">
+
+    <label>Religion</label>
+    <select id="religion">
+      <option value="">Select your religion</option>
+      <option>Islam</option><option>Hinduism</option><option>Christianity</option>
+      <option>Sikhism</option><option>Buddhism</option><option>Jainism</option>
+      <option>Other</option><option>Prefer not to say</option>
+    </select>
+
+    <button class="btn" onclick="discover()">✨ REVEAL MY SOULMATE</button>
+  </div>
+  <div class="note">This is an entertainment experience. Results are fictional/generated and are not factual predictions.</div>
+</section>
+
+<section class="card" id="loading">
+  <div class="loading">
+    <div class="orbit"></div>
+    <h2>Reading the cosmic clues<span class="dots"></span></h2>
+    <p>Creating your fictional soulmate profile</p>
+  </div>
+</section>
+
+<section class="card" id="result">
+  <div class="result-top">
+    <div class="small">✨ YOUR FICTIONAL SOULMATE</div>
+    <h2 id="soulName">Aarav</h2>
+    <div class="sub" id="intro">Someone with a warm and adventurous spirit.</div>
+  </div>
+
+  <div class="portrait"><img id="soulImage" alt="AI-generated fictional soulmate portrait"></div>
+
+  <div class="details">
+    <div class="detail"><b>Age</b><span id="soulAge">24</span></div>
+    <div class="detail"><b>Height</b><span id="height">5'7"</span></div>
+    <div class="detail"><b>Possible location</b><span id="location">Hyderabad</span></div>
+    <div class="detail"><b>Personality</b><span id="personality">Calm & Caring</span></div>
+    <div class="detail"><b>How you may meet</b><span id="meet">Through friends</span></div>
+    <div class="detail"><b>Marriage prediction</b><span id="marriage">Around 27–29</span></div>
+  </div>
+
+  <div class="match">
+    <strong id="compat">94%</strong>
+    <p>Fun compatibility score — generated for entertainment.</p>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="shareResult()">📤 Share Result</button>
+    <button class="btn secondary" onclick="resetPage()">🔄 Try Again</button>
+  </div>
+  <div class="disclaimer">The name, sketch, location, height, age and future prediction shown here are fictional/generated results. They do not identify or reveal a real person's private information.</div>
+</section>
+</main>
+
+<script>
+const MATCH_API_URL="https://script.google.com/macros/s/AKfycbx0Nlc2U4OSfbX3bvxbOFo4Xz92xIgy4TWa5lZasSrIOr1YP5srU2RqH6dUUHQgvBF2/exec";
+
+const profiles={
+  Islam:{
+    male:["Ayaan","Armaan","Rayyan","Rehan","Sameer","Zaid","Faizan","Ibrahim"],
+    female:["Aaliya","Zoya","Inaya","Sara","Maira","Ayesha","Hiba","Alina"]
+  },
+  Hinduism:{
+    male:["Aarav","Kabir","Vihaan","Aditya","Rohan","Arjun","Krishna","Dev"],
+    female:["Aanya","Ananya","Ishita","Meera","Diya","Kavya","Riya","Pooja"]
+  },
+  Christianity:{
+    male:["Aaron","Daniel","Ryan","Nathan","David","Ethan","Noah","Adam"],
+    female:["Sarah","Maria","Anna","Grace","Emily","Sophia","Rachel","Mia"]
+  },
+  Sikhism:{
+    male:["Arjan","Gurman","Harpreet","Jaspreet","Manpreet","Amrit","Gurkirat","Harman"],
+    female:["Simran","Jasleen","Gurleen","Harleen","Navleen","Manpreet","Amrita","Kiran"]
+  },
+  Buddhism:{
+    male:["Adit","Kiran","Niran","Ananda","Ravi","Tenzin","Arun","Milan"],
+    female:["Maya","Tara","Anika","Nisha","Pema","Asha","Lina","Sana"]
+  },
+  Jainism:{
+    male:["Aarush","Dhruv","Kunal","Manav","Parth","Yash","Rishabh","Vivan"],
+    female:["Aaradhya","Kiara","Nandini","Avni","Ira","Myra","Rhea","Tanvi"]
+  },
+  Other:{
+    male:["Alex","Ryan","Jordan","Sam","Noah","Aiden","Kai","Leo"],
+    female:["Ava","Mia","Luna","Emma","Sofia","Ella","Nora","Zoe"]
+  },
+  "Prefer not to say":{
+    male:["Alex","Ryan","Jordan","Sam","Noah","Aiden","Kai","Leo"],
+    female:["Ava","Mia","Luna","Emma","Sofia","Ella","Nora","Zoe"]
+  }
+};
+
+const cities=["Hyderabad","Bengaluru","Mumbai","Delhi","Pune","Chennai","Jaipur"];
+const personalities=["Calm & Caring","Funny & Warm","Ambitious & Kind","Creative & Loyal","Adventurous & Sweet"];
+const meetings=["Through friends","At an event","During a trip","Through work/study","By a surprising coincidence"];
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+const portraitVariations=['natural window light, neutral indoor background, subtle smile','golden hour outdoor light, softly blurred park background, relaxed expression','bright morning light, modern cafe background, gentle smile','overcast daylight, softly blurred city street, natural expression','warm indoor light, elegant home background, calm expression','soft sunset light, terrace background, relaxed candid expression','cool daylight, library background, thoughtful expression','natural daylight, university campus background, friendly smile','soft studio daylight, warm plain wall, relaxed expression','late afternoon sunlight, garden background, subtle smile','natural window light, neutral indoor background, subtle smile','golden hour outdoor light, softly blurred park background, relaxed expression','bright morning light, modern cafe background, gentle smile','overcast daylight, softly blurred city street, natural expression','warm indoor light, elegant home background, calm expression','soft sunset light, terrace background, relaxed candid expression','cool daylight, library background, thoughtful expression','natural daylight, university campus background, friendly smile','soft studio daylight, warm plain wall, relaxed expression','late afternoon sunlight, garden background, subtle smile','natural window light, neutral indoor background, subtle smile','golden hour outdoor light, softly blurred park background, relaxed expression','bright morning light, modern cafe background, gentle smile','overcast daylight, softly blurred city street, natural expression','warm indoor light, elegant home background, calm expression','soft sunset light, terrace background, relaxed candid expression','cool daylight, library background, thoughtful expression','natural daylight, university campus background, friendly smile','soft studio daylight, warm plain wall, relaxed expression','late afternoon sunlight, garden background, subtle smile','natural window light, neutral indoor background, subtle smile','golden hour outdoor light, softly blurred park background, relaxed expression','bright morning light, modern cafe background, gentle smile','overcast daylight, softly blurred city street, natural expression','warm indoor light, elegant home background, calm expression','soft sunset light, terrace background, relaxed candid expression','cool daylight, library background, thoughtful expression','natural daylight, university campus background, friendly smile','soft studio daylight, warm plain wall, relaxed expression','late afternoon sunlight, garden background, subtle smile','natural window light, neutral indoor background, subtle smile','golden hour outdoor light, softly blurred park background, relaxed expression','bright morning light, modern cafe background, gentle smile','overcast daylight, softly blurred city street, natural expression','warm indoor light, elegant home background, calm expression','soft sunset light, terrace background, relaxed candid expression','cool daylight, library background, thoughtful expression','natural daylight, university campus background, friendly smile','soft studio daylight, warm plain wall, relaxed expression','late afternoon sunlight, garden background, subtle smile'];
+
+function buildPortraitUrl(gender, religion, name){
+  const targetGender=gender === "male" ? "female" : "male";
+  const variation=pick(portraitVariations);
+  const prompt=`ultra photorealistic real-life DSLR photograph of a fictional adult ${targetGender}, age 21 to 35, respectful ${religion} cultural appearance, realistic facial proportions, authentic skin pores and tiny natural imperfections, realistic eyes, individual hair strands, natural eyebrows, realistic lips, no CGI, no illustration, no plastic skin, no beauty filter, simple tasteful everyday clothing, head and shoulders, ${variation}, 85mm lens, shallow depth of field, physically realistic lighting, true-to-life skin tones, RAW photography, documentary realism, authentic human photograph, fictional person, no celebrity, no text, no watermark`;
+  return "https://image.pollinations.ai/prompt/"+encodeURIComponent(prompt)+"?width=700&height=800&nologo=true&model=flux&seed="+Math.floor(Math.random()*1000000000);
+}
+
+async function discover(){
+  const n=document.getElementById("name").value.trim();
+  const g=document.getElementById("gender").value;
+  const a=Number(document.getElementById("age").value);
+  const r=document.getElementById("religion").value;
+  if(!n || !g || !a || !r){alert("Bhai, saari details fill karo ❤️");return}
+
+  document.getElementById("formCard").style.display="none";
+  document.getElementById("result").style.display="none";
+  document.getElementById("loading").style.display="block";
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  try{
+    const lookupUrl = MATCH_API_URL + "?name=" + encodeURIComponent(n) +
+      "&gender=" + encodeURIComponent(g) + "&religion=" + encodeURIComponent(r);
+    const response = await fetch(lookupUrl, {method:"GET"});
+    const data = await response.json();
+
+    const targetGender = g === "male" ? "female" : "male";
+    const religionProfiles = profiles[r] || profiles.Other;
+    const normalizedName = n.toLowerCase().replace(/\s+/g, " ").trim();
+
+    // Existing special rule is preserved; manual Sheet2 matches have priority in the API.
+    let soulName = data.result || null;
+    if(!soulName && normalizedName === "abdul hadi" && targetGender === "female") soulName="Hafsa";
+
+    // First-time search: generate a compatible result and save it permanently.
+    if(!soulName){
+      soulName = pick(religionProfiles[targetGender]);
+      const saveUrl = MATCH_API_URL + "?action=save&name=" + encodeURIComponent(n) +
+        "&result=" + encodeURIComponent(soulName) +
+        "&gender=" + encodeURIComponent(g) +
+        "&religion=" + encodeURIComponent(r);
+      try{
+        await fetch(saveUrl, {method:"GET"});
+      }catch(saveError){
+        console.warn("Match save failed:", saveError);
+      }
+    }
+
+    const soulAge=Math.max(18, Math.min(45, a + Math.floor(Math.random()*7)-3));
+    const minHeight = targetGender === "female" ? 4.9 : 5.3;
+    const maxHeight = targetGender === "female" ? 5.9 : 6.4;
+    const totalInches = minHeight*12 + Math.floor(Math.random()*((maxHeight-minHeight)*12+1));
+    const feet = Math.floor(totalInches/12);
+    const inches = totalInches % 12;
+
+    document.getElementById("soulName").textContent=soulName;
+    document.getElementById("soulAge").textContent=soulAge;
+    document.getElementById("height").textContent=feet+"'"+inches+'"';
+    document.getElementById("location").textContent=pick(cities);
+    document.getElementById("personality").textContent=pick(personalities);
+    document.getElementById("meet").textContent=pick(meetings);
+    document.getElementById("marriage").textContent="Around "+(a+Math.floor(Math.random()*8)+2)+"–"+(a+Math.floor(Math.random()*8)+4);
+    document.getElementById("compat").textContent=(88+Math.floor(Math.random()*12))+"%";
+    document.getElementById("intro").textContent="A fictional "+r+" match created specially for "+n+".";
+    document.getElementById("soulImage").src=buildPortraitUrl(g,r,soulName);
+    document.getElementById("soulImage").alt=`AI-generated fictional ${targetGender} soulmate portrait`;
+
+    document.getElementById("loading").style.display="none";
+    document.getElementById("result").style.display="block";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }catch(error){
+    console.error(error);
+    document.getElementById("loading").style.display="none";
+    document.getElementById("formCard").style.display="block";
+    alert("Match service se connection nahi ho paaya. Apps Script deployment check karo.");
+  }
+}
+
+function resetPage(){
+ document.getElementById("result").style.display="none";
+ document.getElementById("formCard").style.display="block";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function shareResult(){
+ const text=`✨ I discovered my fictional soulmate: ${document.getElementById("soulName").textContent} ❤️ | Compatibility: ${document.getElementById("compat").textContent}`;
+ if(navigator.share) navigator.share({title:"My Soulmate Result",text});
+ else navigator.clipboard?.writeText(text).then(()=>alert("Result text copied!"));
+}
+</script>
+</body>
+</html>

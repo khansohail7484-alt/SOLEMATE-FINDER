@@ -120,6 +120,7 @@ select option{background:#12091d}
 </head>
 <body>
 <div class="stars"></div>
+
 <header>
   <div class="logo">SOUL<span>MATE</span></div>
   <div class="badge">✨ Just for fun</div>
@@ -136,6 +137,7 @@ select option{background:#12091d}
   <h2>Tell us about yourself</h2>
   <div class="sub">Your journey starts with four little details.</div>
   <div class="form">
+
     <label>Your name</label>
     <input id="name" placeholder="Enter your name" maxlength="40">
 
@@ -159,6 +161,7 @@ select option{background:#12091d}
 
     <button class="btn" onclick="startReveal()">✨ REVEAL MY SOULMATE</button>
   </div>
+
   <div class="note">This is an entertainment experience. Results are fictional/generated and are not factual predictions.</div>
 </section>
 
@@ -173,13 +176,24 @@ select option{background:#12091d}
 <section class="card payment-box" id="paymentBox">
   <h3>💳 Pay ₹5 to Reveal</h3>
   <div class="pay-sub">Scan this QR with your UPI app and complete the ₹5 payment.</div>
-  <div class="qr-wrap"><img id="paymentQr" alt="UPI payment QR code"></div>
+
+  <div class="qr-wrap">
+    <img id="paymentQr" alt="UPI payment QR code">
+  </div>
+
   <div class="qr-count">QR expires in <strong id="qrTimer">40</strong> seconds</div>
+
   <div id="paidWaitText" class="payment-note" style="font-size:12px;margin-top:4px;">
     I HAVE PAID option will show after <b id="paidWaitTimer">40</b> seconds
   </div>
-  <div class="upi-id">UPI ID: <b>9618037368@ibl</b><br>Amount: <b>₹5</b></div>
+
+  <div class="upi-id">
+    UPI ID: <b>8125970360@fam</b><br>
+    Amount: <b>₹5</b>
+  </div>
+
   <button class="btn" id="paidBtn" onclick="confirmPaid()">I HAVE PAID ₹5 — REVEAL</button>
+
   <div class="payment-note">Payment is not automatically verified. Tap only after completing the ₹5 payment.</div>
 </section>
 
@@ -190,7 +204,9 @@ select option{background:#12091d}
     <div class="sub" id="intro">Someone with a warm and adventurous spirit.</div>
   </div>
 
-  <div class="portrait"><img id="soulImage" alt="AI-generated fictional soulmate portrait"></div>
+  <div class="portrait">
+    <img id="soulImage" alt="AI-generated fictional soulmate portrait">
+  </div>
 
   <div class="details">
     <div class="detail"><b>Age</b><span id="soulAge">24</span></div>
@@ -210,11 +226,15 @@ select option{background:#12091d}
     <button class="btn" onclick="shareResult()">📤 Share Result</button>
     <button class="btn secondary" onclick="resetPage()">🔄 Try Again</button>
   </div>
-  <div class="disclaimer">The name, sketch, location, height, age and future prediction shown here are fictional/generated results. They do not identify or reveal a real person's private information.</div>
+
+  <div class="disclaimer">
+    The name, sketch, location, height, age and future prediction shown here are fictional/generated results. They do not identify or reveal a real person's private information.
+  </div>
 </section>
 </main>
 
 <script>
+
 const MATCH_API_URL="https://script.google.com/macros/s/AKfycbx0Nlc2U4OSfbX3bvxbOFo4Xz92xIgy4TWa5lZasSrIOr1YP5srU2RqH6dUUHQgvBF2/exec";
 
 const profiles={
@@ -222,30 +242,37 @@ const profiles={
     male:["Ayaan","Armaan","Rayyan","Rehan","Sameer","Zaid","Faizan","Ibrahim"],
     female:["Aaliya","Zoya","Inaya","Sara","Maira","Ayesha","Hiba","Alina"]
   },
+
   Hinduism:{
     male:["Aarav","Kabir","Vihaan","Aditya","Rohan","Arjun","Krishna","Dev"],
     female:["Aanya","Ananya","Ishita","Meera","Diya","Kavya","Riya","Pooja"]
   },
+
   Christianity:{
     male:["Aaron","Daniel","Ryan","Nathan","David","Ethan","Noah","Adam"],
     female:["Sarah","Maria","Anna","Grace","Emily","Sophia","Rachel","Mia"]
   },
+
   Sikhism:{
     male:["Arjan","Gurman","Harpreet","Jaspreet","Manpreet","Amrit","Gurkirat","Harman"],
     female:["Simran","Jasleen","Gurleen","Harleen","Navleen","Manpreet","Amrita","Kiran"]
   },
+
   Buddhism:{
     male:["Adit","Kiran","Niran","Ananda","Ravi","Tenzin","Arun","Milan"],
     female:["Maya","Tara","Anika","Nisha","Pema","Asha","Lina","Sana"]
   },
+
   Jainism:{
     male:["Aarush","Dhruv","Kunal","Manav","Parth","Yash","Rishabh","Vivan"],
     female:["Aaradhya","Kiara","Nandini","Avni","Ira","Myra","Rhea","Tanvi"]
   },
+
   Other:{
     male:["Alex","Ryan","Jordan","Sam","Noah","Aiden","Kai","Leo"],
     female:["Ava","Mia","Luna","Emma","Sofia","Ella","Nora","Zoe"]
   },
+
   "Prefer not to say":{
     male:["Alex","Ryan","Jordan","Sam","Noah","Aiden","Kai","Leo"],
     female:["Ava","Mia","Luna","Emma","Sofia","Ella","Nora","Zoe"]
@@ -256,9 +283,31 @@ const cities=["Hyderabad","Bengaluru","Mumbai","Delhi","Pune","Chennai","Jaipur"
 const personalities=["Calm & Caring","Funny & Warm","Ambitious & Kind","Creative & Loyal","Adventurous & Sweet"];
 const meetings=["Through friends","At an event","During a trip","Through work/study","By a surprising coincidence"];
 
-function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function pick(arr){
+  return arr[Math.floor(Math.random()*arr.length)]
+}
 
 const portraitVariations=[
+'natural window light, neutral indoor background, subtle smile',
+'golden hour outdoor light, softly blurred park background, relaxed expression',
+'bright morning light, modern cafe background, gentle smile',
+'overcast daylight, softly blurred city street, natural expression',
+'warm indoor light, elegant home background, calm expression',
+'soft sunset light, terrace background, relaxed candid expression',
+'cool daylight, library background, thoughtful expression',
+'natural daylight, university campus background, friendly smile',
+'soft studio daylight, warm plain wall, relaxed expression',
+'late afternoon sunlight, garden background, subtle smile',
+'natural window light, neutral indoor background, subtle smile',
+'golden hour outdoor light, softly blurred park background, relaxed expression',
+'bright morning light, modern cafe background, gentle smile',
+'overcast daylight, softly blurred city street, natural expression',
+'warm indoor light, elegant home background, calm expression',
+'soft sunset light, terrace background, relaxed candid expression',
+'cool daylight, library background, thoughtful expression',
+'natural daylight, university campus background, friendly smile',
+'soft studio daylight, warm plain wall, relaxed expression',
+'late afternoon sunlight, garden background, subtle smile',
 'natural window light, neutral indoor background, subtle smile',
 'golden hour outdoor light, softly blurred park background, relaxed expression',
 'bright morning light, modern cafe background, gentle smile',
@@ -291,17 +340,22 @@ const portraitVariations=[
 'late afternoon sunlight, garden background, subtle smile'
 ];
 
-function buildPortraitUrl(gender,religion,name){
-  const targetGender=gender==="male"?"female":"male";
+function buildPortraitUrl(gender, religion, name){
+  const targetGender=gender === "male" ? "female" : "male";
   const variation=pick(portraitVariations);
+
   const prompt=`ultra photorealistic real-life DSLR photograph of a fictional adult ${targetGender}, age 21 to 35, respectful ${religion} cultural appearance, realistic facial proportions, authentic skin pores and tiny natural imperfections, realistic eyes, individual hair strands, natural eyebrows, realistic lips, no CGI, no illustration, no plastic skin, no beauty filter, simple tasteful everyday clothing, head and shoulders, ${variation}, 85mm lens, shallow depth of field, physically realistic lighting, true-to-life skin tones, RAW photography, documentary realism, authentic human photograph, fictional person, no celebrity, no text, no watermark`;
+
   return "https://image.pollinations.ai/prompt/"+encodeURIComponent(prompt)+"?width=700&height=800&nologo=true&model=flux&seed="+Math.floor(Math.random()*1000000000);
 }
 
-let paymentTimer=null,paidDelayTimer=null,paidAvailableTimer=null,paymentAllowed=false;
-const PAYMENT_UPI="upi://pay?pa=9618037368%40ibl&pn=Soulmate%20Finder&am=5&cu=INR&tn=Soulmate%20Finder";
+let paymentTimer=null, paidDelayTimer=null, paidAvailableTimer=null, paymentAllowed=false;
+
+/* UPDATED UPI */
+const PAYMENT_UPI="upi://pay?pa=8125970360%40fam&pn=Soulmate%20Finder&am=5&cu=INR&tn=Soulmate%20Finder";
 
 function startReveal(){
+
   const n=document.getElementById("name").value.trim();
   const g=document.getElementById("gender").value;
   const a=Number(document.getElementById("age").value);
@@ -322,6 +376,7 @@ function startReveal(){
 }
 
 function showPaymentBox(){
+
   document.getElementById("formCard").style.display="none";
   document.getElementById("result").style.display="none";
   document.getElementById("loading").style.display="none";
@@ -337,6 +392,7 @@ function showPaymentBox(){
   qr.style.display="block";
 
   const waitText=document.getElementById("paidWaitText");
+
   if(waitText) waitText.style.display="block";
 
   qr.src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data="+encodeURIComponent(PAYMENT_UPI);
@@ -344,22 +400,26 @@ function showPaymentBox(){
   clearInterval(paymentTimer);
   clearTimeout(paidDelayTimer);
   clearInterval(paidAvailableTimer);
+  clearInterval(paidAvailableTimer);
 
   let remaining=40;
+
   timer.textContent=remaining;
 
   const paidWaitTimer=document.getElementById("paidWaitTimer");
+
   if(paidWaitTimer) paidWaitTimer.textContent=remaining;
 
   paymentTimer=setInterval(()=>{
+
     remaining--;
 
     timer.textContent=remaining;
 
-    if(paidWaitTimer)
-      paidWaitTimer.textContent=remaining;
+    if(paidWaitTimer) paidWaitTimer.textContent=remaining;
 
     if(remaining<=0){
+
       clearInterval(paymentTimer);
       paymentTimer=null;
 
@@ -376,33 +436,43 @@ function showPaymentBox(){
       clearInterval(paidAvailableTimer);
 
       paidAvailableTimer=setInterval(()=>{
+
         availableRemaining--;
 
         if(waitText2)
           waitText2.innerHTML="I HAVE PAID option is now available — <b>"+Math.max(availableRemaining,0)+"</b> seconds";
 
         if(availableRemaining<=0){
+
           clearInterval(paidAvailableTimer);
           paidAvailableTimer=null;
+
         }
+
       },1000);
     }
+
   },1000);
 
   paidDelayTimer=setTimeout(()=>{
+
     paymentAllowed=true;
     paid.style.display="block";
+
   },40000);
 
-  box.scrollIntoView({behavior:"smooth",block:"center"});
+  box.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
 }
 
 function confirmPaid(){
+
   if(!paymentAllowed) return;
 
   clearInterval(paymentTimer);
   clearTimeout(paidDelayTimer);
-  clearInterval(paidAvailableTimer);
 
   document.getElementById("paymentBox").style.display="none";
 
@@ -410,12 +480,13 @@ function confirmPaid(){
 }
 
 async function discover(){
+
   const n=document.getElementById("name").value.trim();
   const g=document.getElementById("gender").value;
   const a=Number(document.getElementById("age").value);
   const r=document.getElementById("religion").value;
 
-  if(!n||!g||!a||!r){
+  if(!n || !g || !a || !r){
     alert("Bhai, saari details fill karo ❤️");
     return;
   }
@@ -424,53 +495,69 @@ async function discover(){
   document.getElementById("result").style.display="none";
   document.getElementById("loading").style.display="block";
 
-  window.scrollTo({top:0,behavior:"smooth"});
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
   try{
-    const lookupUrl=MATCH_API_URL+
-      "?name="+encodeURIComponent(n)+
-      "&gender="+encodeURIComponent(g)+
-      "&religion="+encodeURIComponent(r);
 
-    const response=await fetch(lookupUrl,{method:"GET"});
-    const data=await response.json();
+    const lookupUrl = MATCH_API_URL + "?name=" + encodeURIComponent(n) +
+      "&gender=" + encodeURIComponent(g) +
+      "&religion=" + encodeURIComponent(r);
 
-    const targetGender=g==="male"?"female":"male";
-    const religionProfiles=profiles[r]||profiles.Other;
-    const normalizedName=n.toLowerCase().replace(/\s+/g," ").trim();
+    const response = await fetch(lookupUrl,{
+      method:"GET"
+    });
 
-    let soulName=data.result||null;
+    const data = await response.json();
 
-    if(!soulName&&normalizedName==="abdul hadi"&&targetGender==="female")
+    const targetGender = g === "male" ? "female" : "male";
+
+    const religionProfiles = profiles[r] || profiles.Other;
+
+    const normalizedName = n.toLowerCase().replace(/\s+/g," ").trim();
+
+    let soulName = data.result || null;
+
+    if(!soulName && normalizedName === "abdul hadi" && targetGender === "female")
       soulName="Hafsa";
 
     if(!soulName){
-      soulName=pick(religionProfiles[targetGender]);
 
-      const saveUrl=MATCH_API_URL+
-        "?action=save"+
-        "&name="+encodeURIComponent(n)+
-        "&result="+encodeURIComponent(soulName)+
-        "&gender="+encodeURIComponent(g)+
-        "&religion="+encodeURIComponent(r);
+      soulName = pick(religionProfiles[targetGender]);
+
+      const saveUrl = MATCH_API_URL + "?action=save&name=" + encodeURIComponent(n) +
+        "&result=" + encodeURIComponent(soulName) +
+        "&gender=" + encodeURIComponent(g) +
+        "&religion=" + encodeURIComponent(r);
 
       try{
-        await fetch(saveUrl,{method:"GET"});
+
+        await fetch(saveUrl,{
+          method:"GET"
+        });
+
       }catch(saveError){
+
         console.warn("Match save failed:",saveError);
+
       }
     }
 
     const soulAge=Math.max(
       18,
-      Math.min(45,a+Math.floor(Math.random()*7)-3)
+      Math.min(
+        45,
+        a + Math.floor(Math.random()*7)-3
+      )
     );
 
-    const minHeight=targetGender==="female"?4.9:5.3;
-    const maxHeight=targetGender==="female"?5.9:6.4;
+    const minHeight = targetGender === "female" ? 4.9 : 5.3;
+    const maxHeight = targetGender === "female" ? 5.9 : 6.4;
 
-    const totalInches=
-      minHeight*12+
+    const totalInches =
+      minHeight*12 +
       Math.floor(Math.random()*((maxHeight-minHeight)*12+1));
 
     const feet=Math.floor(totalInches/12);
@@ -504,9 +591,13 @@ async function discover(){
     document.getElementById("loading").style.display="none";
     document.getElementById("result").style.display="block";
 
-    window.scrollTo({top:0,behavior:"smooth"});
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
 
   }catch(error){
+
     console.error(error);
 
     document.getElementById("loading").style.display="none";
@@ -517,6 +608,7 @@ async function discover(){
 }
 
 function resetPage(){
+
   clearInterval(paymentTimer);
   clearTimeout(paidDelayTimer);
   clearInterval(paidAvailableTimer);
@@ -525,16 +617,16 @@ function resetPage(){
   document.getElementById("result").style.display="none";
   document.getElementById("formCard").style.display="block";
 
-  window.scrollTo({top:0,behavior:"smooth"});
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
 function shareResult(){
+
   const text=
-    `✨ I discovered my fictional soulmate: ${
-      document.getElementById("soulName").textContent
-    } ❤️ | Compatibility: ${
-      document.getElementById("compat").textContent
-    }`;
+    `✨ I discovered my fictional soulmate: ${document.getElementById("soulName").textContent} ❤️ | Compatibility: ${document.getElementById("compat").textContent}`;
 
   if(navigator.share)
     navigator.share({
@@ -542,9 +634,11 @@ function shareResult(){
       text
     });
   else
-    navigator.clipboard?.writeText(text)
-      .then(()=>alert("Result text copied!"));
+    navigator.clipboard?.writeText(text).then(()=>{
+      alert("Result text copied!");
+    });
 }
+
 </script>
 </body>
 </html>
